@@ -1,18 +1,11 @@
-import { rejects } from "assert";
 import Express from "express"
-import { resolve } from "path/posix";
-import myDb from "./Database/database";
 let mysql = require('mysql');
 
 const app = Express()
 const bodyParser = require("body-parser");
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// function to create the servertypescript
-
-// Handelling a get request
-
-
+// Creating Database connection
 let con = mysql.createConnection({
   host: "localhost",
   user: "root",
@@ -20,20 +13,45 @@ let con = mysql.createConnection({
   database: "IcefullCreamdotcom00",
   table: "Flavours12345601045 "
 });
+// Handelling a get request for showing HOMEPAGE
 app.get('/', (req: any, res: any) => {
-
+  
   res.sendFile(__dirname + "/client.html")
 })
 
-app.get('/read', (req: any, res: any) => {
-console.log("ooooo" + readingValues())
-  res.send(
-    {
-    
-      "data": readingValues() 
-    }
-  )
+// Handelling a put request for UPDATE operation
+app.patch('/update', (req: any, res: any) => {
  
+  let sql = `UPDATE Flavours12345601045 SET  Price = 600 WHERE flavourId = 1`
+  con.query(sql, function (err: any, result: any) {
+    if (err) throw err;
+    console.log("updated")
+    // const data=JSON.stringify(result)
+    res.send({result});
+  })
+})
+
+// Handelling a get request for READ operation
+
+app.get('/read', (req:any, res: any)=>{
+  let sql = "Select * from Flavours12345601045 "
+  con.query(sql, function (err: any, result: any) {
+    if (err) throw err;
+    console.log(req.params.id)
+    console.log("Data recieved")
+    // const data=JSON.stringify(result)
+    res.send({result})
+  })
+})
+
+app.delete('/delete', (req:any, res: any)=>{
+  let sql = `DELETE FROM Flavours12345601045  WHERE flavourId = 2343`
+  con.query(sql, function (err: any, result: any) {
+    if (err) throw err;
+    console.log("record has been delted")
+    // const data=JSON.stringify(result)
+    res.send("record has been delted");
+  })
 })
 
 let flavourId: any, flavourName: any, Price: any
@@ -42,12 +60,13 @@ app.post('/', (req: any, res: any) => {
   flavourId = req.body.flavourId;
   flavourName = req.body.flavourName;
   Price = req.body.Price;
-
-  res.send({
-    "awefgaw":flavourId,
-    "afec":flavourName,
-    "aedw":Price
-  })
+  
+  res.send(
+    `The following dat has been inserted to the databae:
+    Flavor Id: ${flavourId}
+    Flavour Name: ${flavourName}
+    Price : ${Price}`
+  )
   insertValues();
 })
 
@@ -57,8 +76,6 @@ app.listen(8080, () => {
 })
 
 function insertValues() {
-  
-
   // Creating the database
   con.connect((err: any) => {
     if (err) throw err;
@@ -82,20 +99,11 @@ function insertValues() {
     });
   });
 }
-let sql:any;
-function readingValues() {
-  con.connect( function(err:any) {
-    if (err) throw err;
-    con.query("SELECT * FROM Flavours12345601045",  function (err:any, result:any) {
-      if (err) throw err;
-      console.log("asdfasdfasd",result);
-      return new Promise((resolve, reject)=>{
-        if (result){
-          resolve(result)
-        }
-      }
-      )
-    });
-  });
 
-}
+// function readingValues() {
+//   let sql = "Select * from Flavours12345601045 "
+//   con.query(sql, function (err: any, result: any) {
+//     if (err) throw err;
+//     console.log("data ");
+//   });
+// }
