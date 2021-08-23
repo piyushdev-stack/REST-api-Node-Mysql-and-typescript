@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FullStack Application</title>
+    <link defer href="../Server/Server.js">
+</head>
+<body>
+    <div class="wrapper">
+        <div class="main-div">
+            <h1>Welcome to IcefulCream.com</h1>
+            <form action="/" method="POST">
+                <label for="">Flavours</label>
+                <input type="text" placeholder="flavourId" name="flavourId">
+                <input type="text" placeholder="flavourName" name="flavourName">
+                <input type="text" placeholder="Price" name="Price">
+                <button type="submit" name="Submit">Submit</button>
+            </form>
+            <form action="/" method="GET">
+                <button name="Read" id="fetch" onclick=""><a href="/read" style="text-decoration: none; color: black;">Fetch the menu</a></button>
+               <button name="Update">Update the menu</button>
+               <button onclick="" name="Delete">Delete a Item ffrom the menu</button></form>   
+        </div>
+        
+    </div>
+</body>
+</html>
